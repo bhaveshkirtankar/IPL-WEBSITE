@@ -1,0 +1,1648 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPL Dashboard</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #111827;
+            color: white;
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+        }
+
+        .sidebar {
+            background: #0b1120;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+            color: red;
+            margin-bottom: 30px;
+        }
+
+        .nav-link {
+            color: #9ca3af;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #1f2937;
+            color: white;
+        }
+
+        .page-section {
+
+    display: none;
+
+    padding: 20px;
+
+    width: 100%;
+
+    overflow-x: hidden;
+
+}
+
+        .page-section.active {
+            display: block;
+        }
+
+        .card-box {
+
+    background: #1f2937;
+
+    border-radius: 20px;
+
+    padding: 20px;
+
+    margin-top: 10px;
+
+}
+
+        /* Today Match */
+        .today-match {
+
+    background: url("images/ipl-bg.jpg");
+
+    background-size: cover;
+
+    background-position: center;
+
+    min-height: 360px;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    margin-bottom: 30px;
+
+}
+
+
+.match-overlay {
+
+    width: 100%;
+
+    height: 100%;
+
+    background: linear-gradient(
+        to right,
+        rgba(0,0,0,0.75),
+        rgba(0,0,0,0.35)
+    );
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 40px;
+
+}
+
+
+.match-content h1 {
+
+    font-size: 38px;
+
+    font-weight: bold;
+
+    margin-top: 25px;
+
+    margin-bottom: 15px;
+
+}
+
+
+.live-text {
+
+    color: #facc15;
+
+    font-size: 22px;
+
+    font-weight: bold;
+
+}
+
+
+.teams-row {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 40px;
+
+    margin-top: 25px;
+
+}
+
+
+.team-box {
+
+    text-align: center;
+
+}
+
+
+.team-box img {
+
+    width: 80px;
+
+    height: 80px;
+
+    object-fit: contain;
+
+}
+
+
+.team-box h5 {
+
+    margin-top: 10px;
+
+}
+
+
+.vs-box {
+
+    font-size: 45px;
+
+    font-weight: bold;
+
+    color: white;
+
+}
+
+
+.stadium-text {
+
+    font-size: 20px;
+
+    color: #d1d5db;
+
+}
+
+
+        .overlay {
+            background: rgba(0, 0, 0, 0.55);
+            height: 100%;
+            padding: 30px;
+        }
+
+        .overlay h2 {
+            font-size: 40px;
+            font-weight: bold;
+        }
+
+        /* Match Cards */
+     .match-card {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    background: #111827;
+
+    padding: 12px;
+
+    border-radius: 12px;
+
+    margin-bottom: 12px;
+
+    cursor: pointer;
+
+    transition: all 0.35s ease;
+
+}
+
+
+/* Smooth hover */
+.match-card:hover {
+
+    transform: translateY(-4px);
+
+    background: #1f2937;
+
+    box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+
+}
+
+.match-card:hover {
+    transform: translateY(-3px);
+}
+
+.match-card img {
+    width: 40px;          /* smaller logos */
+    height: 40px;
+    object-fit: contain;
+}
+
+.match-card h6,
+.match-card h5 {
+    margin: 0;
+    font-size: 15px;
+}
+
+.match-card small {
+    font-size: 12px;
+}
+
+        .match-card:hover {
+            transform: scale(1.02);
+        }
+
+        .match-card img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+        }
+
+
+        /* Table */
+    .points-container {
+
+    width: 97%;
+
+    margin: auto;
+
+    background: linear-gradient(
+        135deg,
+        #0f172a,
+        #1e3a8a,
+        #312e81
+    );
+
+    border-radius: 18px;
+
+    padding: 18px;
+
+    box-sizing: border-box;
+
+}
+
+
+/* Remove bootstrap styling */
+.points-table {
+
+    width: 100%;
+
+    table-layout: fixed;
+
+    border-collapse: collapse;
+
+    background: transparent !important;
+
+    margin: 0;
+
+}
+
+
+/* Remove bootstrap white bg */
+.points-table th,
+.points-table td {
+
+    background: transparent !important;
+
+    border: none !important;
+
+}
+
+
+/* Header */
+.points-table th {
+
+    color: #fbbf24 !important;
+
+    font-size: 13px;
+
+    padding: 12px 4px;
+
+    text-align: center;
+
+}
+
+
+/* Data rows */
+.points-table td {
+
+    color: white !important;
+
+    font-size: 13px;
+
+    padding: 12px 4px;
+
+    text-align: center;
+
+    border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+
+}
+
+
+/* Team logos */
+.points-table td img {
+
+    width: 22px;
+
+    height: 22px;
+
+    object-fit: contain;
+
+    margin-right: 5px;
+
+}
+
+
+/* Title */
+.points-container h2 {
+
+    font-size: 32px;
+
+    margin-bottom: 20px;
+
+}
+
+
+/* Row hover */
+.points-table tbody tr:hover {
+
+    background: rgba(255,255,255,0.04);
+
+}
+
+        /* Player cards */
+        .player-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    background: #111827;
+
+    padding: 12px;
+
+    border-radius: 12px;
+
+    margin-bottom: 12px;
+}
+
+.player-card img {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.player-card h5 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.player-card p {
+    margin: 0;
+    font-size: 13px;
+    color: #9ca3af;
+}
+
+        .player-card img,
+        .news-card img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .player-card h5,
+        .news-card h5 {
+            margin-bottom: 5px;
+        }
+
+        
+    .schedule-card {
+
+    width: 100%;
+
+    background: #1f2937;
+
+    border-radius: 14px;
+
+    padding: 12px 16px;
+
+    margin-bottom: 12px;
+
+    border-left: 3px solid #3b82f6;
+
+    overflow: hidden;
+
+    transition: all 0.3s ease;
+
+    cursor: pointer;
+
+}
+
+
+/* Hover effect */
+.schedule-card:hover {
+
+    transform: translateY(-4px);
+
+    box-shadow: 0 8px 20px rgba(59,130,246,0.25);
+
+    background: #263445;
+
+}
+
+
+/* Teams row */
+.teams-section {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 10px;
+
+}
+
+
+/* Team */
+.team {
+
+    text-align: center;
+
+}
+
+
+.team img {
+
+    width: 38px;
+
+    height: 38px;
+
+    object-fit: contain;
+
+}
+
+
+.team h6 {
+
+    font-size: 13px;
+
+    margin-top: 3px;
+
+    margin-bottom: 0;
+
+}
+
+
+/* VS */
+.vs-text {
+
+    font-size: 20px;
+
+    font-weight: bold;
+
+    color: #fbbf24;
+
+}
+
+
+/* Match info */
+.match-info h5 {
+
+    font-size: 16px;
+
+    margin-bottom: 4px;
+
+}
+
+
+.match-info p {
+
+    font-size: 13px;
+
+    margin-bottom: 2px;
+
+    color: #9ca3af;
+
+}
+
+
+.match-info small {
+
+    font-size: 12px;
+
+}
+
+
+.news-card {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    background: #1f2937;
+
+    border-radius: 15px;
+
+    padding: 15px;
+
+    margin-bottom: 15px;
+
+    transition: all 0.3s ease;
+
+    cursor: pointer;
+
+}
+
+
+.news-card:hover {
+
+    transform: translateY(-4px);
+
+    background: #263445;
+
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+
+}
+
+
+.news-card img {
+
+    width: 85px;
+
+    height: 85px;
+
+    border-radius: 12px;
+
+    object-fit: cover;
+
+}
+
+
+.news-content h5 {
+
+    margin-top: 8px;
+
+    margin-bottom: 8px;
+
+    font-size: 18px;
+
+}
+
+
+.news-content p {
+
+    margin: 0;
+
+    color: #9ca3af;
+
+    font-size: 14px;
+
+}
+
+
+.news-tag {
+
+    background: #ef4444;
+
+    color: white;
+
+    padding: 4px 10px;
+
+    border-radius: 20px;
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+}
+
+
+   /* Theme button */
+.theme-toggle {
+
+    margin-top: 25px;
+
+    background: #1f2937;
+
+    padding: 12px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    color: white;
+
+    transition: 0.3s;
+
+}
+
+
+.theme-toggle:hover {
+
+    background: #263445;
+
+}
+
+
+/* Light mode */
+body.light-mode {
+
+    background: #f3f4f6;
+
+    color: black;
+
+}
+
+
+/* Sidebar in light mode */
+body.light-mode .sidebar {
+
+    background: white;
+
+    box-shadow: 2px 0 10px rgba(0,0,0,0.08);
+
+}
+
+
+/* Nav links */
+body.light-mode .nav-link {
+
+    color: #374151;
+
+}
+
+
+body.light-mode .nav-link.active {
+
+    background: #e5e7eb;
+
+    color: black;
+
+}
+
+
+/* Cards */
+body.light-mode .card-box,
+body.light-mode .schedule-card,
+body.light-mode .news-card,
+body.light-mode .player-card {
+
+    background: white;
+
+    color: black;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+
+}
+
+
+/* Text */
+body.light-mode p,
+body.light-mode small,
+body.light-mode h5,
+body.light-mode h6 {
+
+    color: black !important;
+
+}
+
+
+/* Home page cards */
+body.light-mode .match-card,
+body.light-mode .card-box,
+body.light-mode .schedule-card,
+body.light-mode .player-card,
+body.light-mode .news-card {
+
+    background: white !important;
+
+    color: black !important;
+
+}
+
+
+/* Today match section */
+body.light-mode .today-match {
+
+    border: 2px solid #e5e7eb;
+
+}
+
+
+body.light-mode .match-overlay {
+
+    background: linear-gradient(
+        to right,
+        rgba(255,255,255,0.75),
+        rgba(255,255,255,0.35)
+    );
+
+}
+
+
+/* Today match text */
+body.light-mode .live-text,
+body.light-mode .match-content h1,
+body.light-mode .stadium-text,
+body.light-mode .vs-box,
+body.light-mode .team-box h5 {
+
+    color: black !important;
+
+}
+
+
+/* Points table */
+body.light-mode .points-container {
+
+    background: white !important;
+
+    color: black !important;
+
+}
+
+
+body.light-mode .points-table td,
+body.light-mode .points-table th {
+
+    color: black !important;
+
+}
+
+
+/* Player / News text */
+body.light-mode .news-content p,
+body.light-mode .player-card p {
+
+    color: #374151 !important;
+
+}
+
+
+/* Light mode sidebar hover */
+body.light-mode .nav-link:hover {
+
+    background: #dbeafe !important;
+
+    color: black !important;
+
+}
+
+
+/* Active nav in light mode */
+body.light-mode .nav-link.active {
+
+    background: #bfdbfe !important;
+
+    color: black !important;
+
+}
+
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container-fluid">
+
+    <div class="row g-0">
+
+        <!-- Sidebar -->
+        <div class="col-md-2 sidebar">
+
+            <div class="logo">
+                CRIC.CO
+            </div>
+
+            <div class="nav-link active" data-page="home">
+                <i class="bi bi-house me-2"></i>Home
+            </div>
+
+            <div class="nav-link" data-page="matches">
+                <i class="bi bi-calendar-event me-2"></i>Matches
+            </div>
+
+            <div class="nav-link" data-page="points">
+                <i class="bi bi-table me-2"></i>Points Table
+            </div>
+
+            <div class="nav-link" data-page="stats">
+                <i class="bi bi-bar-chart me-2"></i>Season Stats
+            </div>
+
+            <div class="nav-link" data-page="news">
+                <i class="bi bi-newspaper me-2"></i>Latest Updates
+            </div>
+
+            <div class="theme-toggle" onclick="toggleTheme()">
+                <i class="bi bi-moon-stars-fill"></i>
+                         Theme
+            </div>
+            
+
+        </div>
+
+
+
+        <!-- Main Content -->
+        <div class="col-md-10">
+
+
+            <!-- HOME -->
+            <div id="home" class="page-section active">
+
+                <div class="today-match">
+
+    <div class="match-overlay">
+
+        <div class="match-content">
+
+            <p class="live-text">
+                16th May 2026 | LIVE
+            </p>
+
+
+            <div class="teams-row">
+
+                <div class="team-box">
+                    <img src="images/kkr.png">
+                    <h5>KKR</h5>
+                </div>
+
+                <div class="vs-box">
+                    VS
+                </div>
+
+                <div class="team-box">
+                    <img src="images/gt.png">
+                    <h5>GT</h5>
+                </div>
+
+            </div>
+
+
+            <h1>
+                KOLKATA KNIGHT RIDERS VS GUJARAT TITANS
+            </h1>
+
+            <p class="stadium-text">
+                Eden Gardens, Kolkata |  7:30 PM
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+                <div class="card-box">
+
+                    <h4 class="mb-4">
+                        Upcoming Matches
+                    </h4>
+
+                    <div class="match-card">
+
+                        <img src="images/pbks.png">
+
+                        <h5>VS</h5>
+
+                        <img src="images/rcb.png">
+
+                        <div>
+                            <h6>PBKS VS RCB</h6>
+                            <small>DHARMASHALA | 17 May | 3:30 PM</small>
+                        </div>
+
+                    </div>
+
+
+                    <div class="match-card">
+
+                        <img src="images/dc.png">
+
+                        <h5>VS</h5>
+
+                        <img src="images/rr.png">
+
+                        <div>
+                            <h6>DC VS RR</h6>
+                            <small>DELHI | 17 May | 7:30 PM</small>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+          
+  <!-- MATCHES -->
+<div id="matches" class="page-section">
+
+    <h3 class="mb-4">
+        Upcoming Matches
+    </h3>
+
+
+    <!-- Match 1 -->
+    <div class="schedule-card">
+
+        <div class="teams-section">
+
+            <div class="team">
+                <img src="images/pbks.png">
+                <h6>PBKS</h6>
+            </div>
+
+            <div class="vs-text">
+                VS
+            </div>
+
+            <div class="team">
+                <img src="images/rcb.png">
+                <h6>RCB</h6>
+            </div>
+
+        </div>
+
+        <div class="match-info">
+
+            <h5>
+                Punjab Kings vs Royal Challengers Bangalore
+            </h5>
+
+            <p>
+                HPCA Stadium, Dharamshala
+            </p>
+
+            <small>
+                Sunday • 17 May • 3:30 PM
+            </small>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Match 2 -->
+    <div class="schedule-card">
+
+        <div class="teams-section">
+
+            <div class="team">
+                <img src="images/dc.png">
+                <h6>DC</h6>
+            </div>
+
+            <div class="vs-text">
+                VS
+            </div>
+
+            <div class="team">
+                <img src="images/rr.png">
+                <h6>RR</h6>
+            </div>
+
+        </div>
+
+        <div class="match-info">
+
+            <h5>
+                Delhi Capitals vs Rajasthan Royals
+            </h5>
+
+            <p>
+                Arun Jaitley Stadium, Delhi
+            </p>
+
+            <small>
+                Sunday • 17 May • 7:30 PM
+            </small>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Match 3 -->
+    <div class="schedule-card">
+
+        <div class="teams-section">
+
+            <div class="team">
+                <img src="images/csk.png">
+                <h6>CSK</h6>
+            </div>
+
+            <div class="vs-text">
+                VS
+            </div>
+
+            <div class="team">
+                <img src="images/srh.png">
+                <h6>SRH</h6>
+            </div>
+
+        </div>
+
+        <div class="match-info">
+
+            <h5>
+                Chennai Super Kings vs Sunrisers Hyderabad
+            </h5>
+
+            <p>
+                MA Chidambaram Stadium, Chennai
+            </p>
+
+            <small>
+                Monday • 18 May • 7:30 PM
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <!-- Match 4 -->
+<div class="schedule-card">
+
+    <div class="teams-section">
+
+        <div class="team">
+            <img src="images/rr.png">
+            <h6>RR</h6>
+        </div>
+
+        <div class="vs-text">VS</div>
+
+        <div class="team">
+            <img src="images/lsg.png">
+            <h6>LSG</h6>
+        </div>
+
+    </div>
+
+    <div class="match-info">
+
+        <h5>Rajasthan Royals vs Lucknow Super Giants</h5>
+
+        <p>Sawai Mansingh Stadium, Jaipur</p>
+
+        <small>Tuesday • 19 May • 7:30 PM</small>
+
+    </div>
+
+</div>
+
+
+
+<!-- Match 5 -->
+<div class="schedule-card">
+
+    <div class="teams-section">
+
+        <div class="team">
+            <img src="images/kkr.png">
+            <h6>KKR</h6>
+        </div>
+
+        <div class="vs-text">VS</div>
+
+        <div class="team">
+            <img src="images/mi.png">
+            <h6>MI</h6>
+        </div>
+
+    </div>
+
+    <div class="match-info">
+
+        <h5>Kolkata Knight Riders vs Mumbai Indians</h5>
+
+        <p>Eden Gardens, Kolkata</p>
+
+        <small>Wednesday • 20 May • 7:30 PM</small>
+
+    </div>
+
+</div>
+
+
+
+<!-- Match 6 -->
+<div class="schedule-card">
+
+    <div class="teams-section">
+
+        <div class="team">
+            <img src="images/gt.png">
+            <h6>GT</h6>
+        </div>
+
+        <div class="vs-text">VS</div>
+
+        <div class="team">
+            <img src="images/csk.png">
+            <h6>CSK</h6>
+        </div>
+
+    </div>
+
+    <div class="match-info">
+
+        <h5>Gujarat Titans vs Chennai Super Kings</h5>
+
+        <p>Narendra Modi Stadium, Ahmedabad</p>
+
+        <small>Thursday • 21 May • 7:30 PM</small>
+
+    </div>
+
+</div>
+
+</div>
+
+
+            <!-- POINTS TABLE -->
+<div id="points" class="page-section">
+
+    <div class="points-container">
+
+        <h2 class="mb-4">
+            IPL 2026 Standings
+        </h2>
+
+
+        <table class="table points-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>#</th>
+
+                    <th>Team</th>
+
+                    <th>M</th>
+
+                    <th>W</th>
+
+                    <th>L</th>
+
+                    <th>NRR</th>
+
+                    <th>Pts</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                <tr>
+                    <td>1</td>
+                    <td>
+                        <img src="images/rcb.png"> RCB
+                    </td>
+                    <td>12</td>
+                    <td>8</td>
+                    <td>4</td>
+                    <td>+1.245</td>
+                    <td>16</td>
+                </tr>
+
+
+                <tr>
+                    <td>2</td>
+                    <td>
+                        <img src="images/gt.png"> GT
+                    </td>
+                    <td>12</td>
+                    <td>8</td>
+                    <td>4</td>
+                    <td>+0.980</td>
+                    <td>16</td>
+                </tr>
+
+
+                <tr>
+                    <td>3</td>
+                    <td>
+                        <img src="images/srh.png"> SRH
+                    </td>
+                    <td>12</td>
+                    <td>7</td>
+                    <td>5</td>
+                    <td>+0.338</td>
+                    <td>14</td>
+                </tr>
+
+
+                <tr>
+                    <td>4</td>
+                    <td>
+                        <img src="images/pbks.png"> PBKS
+                    </td>
+                    <td>12</td>
+                    <td>6</td>
+                    <td>5</td>
+                    <td>+0.510</td>
+                    <td>13</td>
+                </tr>
+
+
+                <tr>
+                    <td>5</td>
+                    <td>
+                        <img src="images/rr.png"> RR
+                    </td>
+                    <td>11</td>
+                    <td>6</td>
+                    <td>5</td>
+                    <td>+0.082</td>
+                    <td>12</td>
+                </tr>
+
+
+                <tr>
+                    <td>6</td>
+                    <td>
+                        <img src="images/csk.png"> CSK
+                    </td>
+                    <td>12</td>
+                    <td>6</td>
+                    <td>6</td>
+                    <td>+0.027</td>
+                    <td>12</td>
+                </tr>
+
+
+                <tr>
+                    <td>7</td>
+                    <td>
+                        <img src="images/dc.png"> DC
+                    </td>
+                    <td>12</td>
+                    <td>5</td>
+                    <td>7</td>
+                    <td>-0.440</td>
+                    <td>10</td>
+                </tr>
+
+
+                <tr>
+                    <td>8</td>
+                    <td>
+                        <img src="images/kkr.png"> KKR
+                    </td>
+                    <td>11</td>
+                    <td>4</td>
+                    <td>6</td>
+                    <td>-0.620</td>
+                    <td>9</td>
+                </tr>
+
+
+                <tr>
+                    <td>9</td>
+                    <td>
+                        <img src="images/mi.png"> MI
+                    </td>
+                    <td>12</td>
+                    <td>4</td>
+                    <td>8</td>
+                    <td>-0.880</td>
+                    <td>8</td>
+                </tr>
+
+
+                <tr>
+                    <td>10</td>
+                    <td>
+                        <img src="images/lsg.png"> LSG
+                    </td>
+                    <td>12</td>
+                    <td>4</td>
+                    <td>8</td>
+                    <td>-1.245</td>
+                    <td>8</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+
+            <!-- STATS -->
+<div id="stats" class="page-section">
+
+    <div class="row">
+
+        <!-- Orange Cap -->
+        <div class="col-md-6">
+
+            <div class="card-box">
+
+                <h3 class="text-warning mb-4">
+                    <span style="color:#ff8c00; font-weight:bold;">🧢 Orange Cap</span>
+                </h3>
+
+
+                <div class="player-card">
+
+                    <img src="images/klassen.jpg">
+
+                    <div>
+                        <h5>Henrich Klassen</h5>
+                        <p>508 Runs</p>
+                    </div>
+
+                </div>
+
+
+                <div class="player-card">
+
+                    <img src="images/sai.jpg">
+
+                    <div>
+                        <h5>Sai Sudarshan</h5>
+                        <p>501 Runs</p>
+                    </div>
+
+                </div>
+
+
+                <div class="player-card">
+
+                    <img src="images/virat.jpg">
+
+                    <div>
+                        <h5>Virat Kohli</h5>
+                        <p>484 Runs</p>
+                    </div>
+
+                </div>
+
+
+                <div class="player-card">
+
+                    <img src="images/abhishek.jpg">
+
+                    <div>
+                        <h5>Abhishek Sharma</h5>
+                        <p>481 Runs</p>
+                    </div>
+
+                </div>
+
+
+                <div class="player-card">
+
+                    <img src="images/rahul.jpg">
+
+                    <div>
+                        <h5>Kl Rahul</h5>
+                        <p>477 Runs</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- Purple Cap -->
+        <div class="col-md-6">
+
+            <div class="card-box">
+
+                <h3 class="text-primary mb-4">
+                    <span style="color:#800080; font-weight:bold;">🧢 Purple Cap</span>
+                </h3>
+
+
+                <div class="player-card">
+
+                    <img src="images/bhuvi.jpg">
+
+                    <div>
+                        <h5>Bhuvneshwar Kumar</h5>
+                        <p>22 Wickets</p>
+                    </div>
+
+                </div>
+
+
+                <div class="player-card">
+
+                    <img src="images/rabada.jpg">
+
+                    <div>
+                        <h5>Kagiso Rabada</h5>
+                        <p>21 Wickets</p>
+                    </div>
+
+                </div>
+
+
+                <div class="player-card">
+
+                    <img src="images/anshul.jpg">
+
+                    <div>
+                        <h5>Anshul Kamboj</h5>
+                        <p>19 Wickets</p>
+                    </div>
+
+                </div>
+
+
+                <div class="player-card">
+
+                    <img src="images/rashid.jpg">
+
+                    <div>
+                        <h5>Rashid Khan</h5>
+                        <p>16 Wickets</p>
+                    </div>
+
+                </div>
+
+
+                <div class="player-card">
+
+                    <img src="images/prince.jpg">
+
+                    <div>
+                        <h5>Prince Yadav</h5>
+                        <p>16 Wickets</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+            <!-- LATEST UPDATES -->
+<div id="news" class="page-section">
+
+    <h3 class="mb-4">
+        Latest Updates
+    </h3>
+
+
+    <!-- News 1 -->
+    <div class="news-card">
+
+        <img src="images/virat.jpg">
+
+        <div class="news-content">
+
+            <span class="news-tag">
+                BREAKING
+            </span>
+
+            <h5>
+                Virat Kohli Reached to Dharmashala for Tomorrow's Match against PBKS
+            </h5>
+
+            <p>
+                Can virat again score century tommorrow and help RCB to be in top 2 race?
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- News 2 -->
+    <div class="news-card">
+
+        <img src="images/bumrah.jpg">
+
+        <div class="news-content">
+
+            <span class="news-tag">
+                TRENDING
+            </span>
+
+            <h5>
+                The season to forget for Bumrah continues as he goes wicketless in another match
+            </h5>
+
+            <p>
+                The MI pacer has struggled to find rhythm this season and is under pressure.
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- News 3 -->
+    <div class="news-card">
+
+        <img src="images/gill.jpg">
+
+        <div class="news-content">
+
+            <span class="news-tag">
+                HOT NEWS
+            </span>
+
+            <h5>
+                Can Gt officially enters playoffs with another win today
+            </h5>
+
+            <p>
+                Gill's consistency with the bat keeps Gujarat Titans in playoff race.
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- News 4 -->
+    <div class="news-card">
+
+        <img src="images/dhoni.jpg">
+
+        <div class="news-content">
+
+            <span class="news-tag">
+                EXCLUSIVE
+            </span>
+
+            <h5>
+                Ms Dhoni Likely To Play Against SRH in Chennai's Last League Match
+            </h5>
+
+            <p>
+                The CSK legend remains confident about the team’s qualification.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
